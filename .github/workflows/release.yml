@@ -1,0 +1,40 @@
+name: Release Build
+
+# 推送 v* 标签时自动构建 Windows 安装包并发布到 GitHub Releases
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build-windows:
+    permissions:
+      contents: write
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Build and upload release
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_name }}
+          releaseName: "DSH Launcher ${{ github.ref_name }}"
+          releaseBody: "下载下方资产安装使用，使用说明见 README。"
+          releaseDraft: false
+          prerelease: false

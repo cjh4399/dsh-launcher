@@ -102,3 +102,13 @@ VS Build Tools（C++ 工作负载）、WebView2（Win10/11 自带）。
 - 实例自定义凭据不经过启动器进程，由 dsh Web UI 写入各实例独立的
   `home/.credentials.yaml`
 - 删除实例、卸载 dsh 均有确认弹窗；启动器退出时自动清理子进程
+
+## Release
+
+推送 `v*` 标签（如 `v0.1.0`）会触发 GitHub Actions 自动构建 Windows 安装包并发布到 [Releases](https://github.com/cjh4399/dsh-launcher/releases)。
+
+应用图标源文件为 `app-icon.png`（1024×1024），修改后运行 `npm run tauri icon app-icon.png` 重新生成全套图标。
+
+## License
+
+[MIT](./LICENSE)
